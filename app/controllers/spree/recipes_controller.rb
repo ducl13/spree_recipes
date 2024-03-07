@@ -19,9 +19,10 @@ module Spree
 
     def generate_pdf
       @recipe = Spree::Recipe.friendly.find(params[:id])
+      file_name = @recipe.name.parameterize
       respond_to do |format|
         format.pdf do
-          render pdf: 'recipe_pdf',
+          render pdf: file_name,
                  template: 'spree/recipes/generate_pdf.html.erb',
                  layout: 'spree/layouts/pdf.html.erb'
         end

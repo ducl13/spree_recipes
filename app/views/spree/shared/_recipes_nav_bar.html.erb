@@ -1,11 +1,13 @@
+<% recipe_category = Spree::Taxon.find_by_name("Recipes") %>
+<% recipe_categories = recipe_category.present? ? recipe_category&.descendants&.where(hide_from_nav: false)&.first(8) : [] %>
 
-<% if @recipe_category.present? %>
+<% if recipe_category.present? %>
   <li class="nav-item">
-    <%= link_to @recipe_category.name.humanize, recipe_taxons_path, class: "nav-link", 'aria-label': "Menu "+@recipe_category.name, data: { turbolinks: false } %>
+    <%= link_to recipe_category.name.humanize, recipe_taxons_path, class: "nav-link", 'aria-label': "Menu "+recipe_category.name, data: { turbolinks: false } %>
     <div class="dropdown-menu-wrap">
       <ul>
-        <% main_recipe_taxons = @recipe_categories %>
-        <% main_recipe_taxons.in_groups_of(8) do |categories|%>
+        <% main_recipe_taxons = recipe_categories %>
+        <% main_recipe_taxons&.in_groups_of(8) do |categories|%>
           <% categories.compact.each do |category| %>
             <li>
                 <!-- Sub Menu -->
@@ -27,7 +29,7 @@
             </li>
           <% end %>
         <% end %>
-        <%= link_to recipe_taxons_path, class: "menu-see-all", data: { turbolinks: false } do %>See All <strong><%= @recipe_category.name%></strong><% end %>
+        <%= link_to recipe_taxons_path, class: "menu-see-all", data: { turbolinks: false } do %>See All <strong><%= recipe_category.name%></strong><% end %>
       </ul>
     </div>
   </li>
